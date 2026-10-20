@@ -1,0 +1,526 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Propiedades en arriendo
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container py-4">
+
+
+    <!-- ====================================================== -->
+    <!-- TÍTULO -->
+    <!-- ====================================================== -->
+
+    <h1 class="mb-4">
+        Propiedades en arriendo
+    </h1>
+
+
+
+    <!-- ====================================================== -->
+    <!-- FILTROS -->
+    <!-- ====================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+
+            <form method="GET">
+
+                <div class="row g-3 align-items-end">
+
+
+                    <!-- ================================================== -->
+                    <!-- TIPO DE INMUEBLE -->
+                    <!-- ================================================== -->
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            Tipo de inmueble
+                        </label>
+
+                        <select
+                            name="tipo"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Todos
+                            </option>
+
+
+                            {% for tipo in tipos %}
+
+                                <option
+                                    value="{{ tipo.id }}"
+                                    {% if tipo.id|stringformat:"s" == tipo_seleccionado %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ tipo.nombre }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- REGIÓN -->
+                    <!-- ================================================== -->
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            Región
+                        </label>
+
+                        <select
+                            name="region"
+                            id="region"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Todas
+                            </option>
+
+
+                            {% for region in regiones %}
+
+                                <option
+                                    value="{{ region.id }}"
+                                    {% if region.id|stringformat:"s" == region_seleccionada %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ region.nombre }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- COMUNA -->
+                    <!-- ================================================== -->
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            Comuna
+                        </label>
+
+                        <select
+                            name="comuna"
+                            id="comuna"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Todas
+                            </option>
+
+
+                            {% for comuna in comunas %}
+
+                                <option
+                                    value="{{ comuna.id }}"
+                                    data-region="{{ comuna.region_id }}"
+                                    {% if comuna.id|stringformat:"s" == comuna_seleccionada %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ comuna.nombre }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- BOTONES -->
+                    <!-- ================================================== -->
+
+                    <div class="col-md-3">
+
+                        <div class="d-flex gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Filtrar
+                            </button>
+
+
+                            <a
+                                href="{% url 'gestion_inmuebles:home' %}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Limpiar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ====================================================== -->
+    <!-- LISTADO DE INMUEBLES -->
+    <!-- ====================================================== -->
+
+    <div class="row g-4">
+
+
+        {% for inmueble in inmuebles %}
+
+
+            <div class="col-md-6 col-lg-4">
+
+
+                <!-- TODA LA TARJETA ES CLICKEABLE -->
+                <a
+                    href="{% url 'gestion_inmuebles:detalle_inmueble' inmueble.id %}"
+                    class="text-decoration-none text-dark"
+                >
+
+
+                    <div class="card h-100 shadow-sm">
+
+
+                        <!-- ================================================== -->
+                        <!-- IMAGEN DEL INMUEBLE -->
+                        <!-- ================================================== -->
+
+                        <div
+                            class="position-relative overflow-hidden"
+                            style="height: 220px;"
+                        >
+
+
+                            {% if inmueble.imagen %}
+
+                                <img
+                                    src="{{ inmueble.imagen.url }}"
+                                    alt="{{ inmueble.nombre }}"
+                                    class="w-100 h-100"
+                                    style="object-fit: cover;"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="bg-secondary-subtle d-flex align-items-center justify-content-center w-100 h-100"
+                                >
+
+                                    <span class="text-secondary">
+                                        Sin imagen
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+
+
+                            <!-- ================================================== -->
+                            <!-- ESTADO DEL INMUEBLE -->
+                            <!-- ================================================== -->
+
+
+                            <!--
+                                SOLICITUD ENVIADA tiene prioridad
+                                sobre el estado VISTO.
+                            -->
+
+                            {% if inmueble.id in inmuebles_solicitados %}
+
+
+                                <span
+                                    class="badge bg-success position-absolute top-0 end-0 m-3"
+                                >
+                                    ✓ Solicitud enviada
+                                </span>
+
+
+                            {% elif inmueble.id in inmuebles_vistos %}
+
+
+                                <span
+                                    class="badge bg-warning text-dark position-absolute top-0 end-0 m-3"
+                                >
+                                    Visto
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- ================================================== -->
+                        <!-- INFORMACIÓN -->
+                        <!-- ================================================== -->
+
+                        <div class="card-body">
+
+
+                            <!-- PRECIO -->
+                            <h4 class="fw-bold">
+
+                                ${{ inmueble.precio_mensual|floatformat:"0g" }}
+
+                            </h4>
+
+
+
+                            <!-- NOMBRE -->
+                            <h5 class="card-title fw-bold">
+
+                                {{ inmueble.nombre }}
+
+                            </h5>
+
+
+
+                            <!-- TIPO Y COMUNA -->
+                            <p class="text-muted">
+
+                                {{ inmueble.tipo_inmueble }}
+
+                                -
+
+                                {{ inmueble.comuna }}
+
+                            </p>
+
+
+
+                            <!-- DIRECCIÓN -->
+                            <p class="mb-3">
+
+                                {{ inmueble.direccion }}
+
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- ================================================== -->
+                        <!-- CARACTERÍSTICAS -->
+                        <!-- ================================================== -->
+
+                        <div class="card-footer bg-white">
+
+
+                            <div class="row text-center">
+
+
+                                <!-- HABITACIONES -->
+                                <div class="col">
+
+                                    <strong>
+                                        {{ inmueble.habitaciones }}
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        Dorm.
+                                    </small>
+
+                                </div>
+
+
+
+                                <!-- BAÑOS -->
+                                <div class="col">
+
+                                    <strong>
+                                        {{ inmueble.banos }}
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        Baños
+                                    </small>
+
+                                </div>
+
+
+
+                                <!-- METROS -->
+                                <div class="col">
+
+                                    <strong>
+                                        {{ inmueble.m2_construidos }}
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        m²
+                                    </small>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </a>
+
+
+            </div>
+
+
+        {% empty %}
+
+
+            <!-- ====================================================== -->
+            <!-- SIN RESULTADOS -->
+            <!-- ====================================================== -->
+
+            <div class="col-12">
+
+                <div class="alert alert-warning">
+
+                    No se encontraron propiedades con los filtros seleccionados.
+
+                </div>
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================== -->
+<!-- FILTRAR COMUNAS SEGÚN LA REGIÓN -->
+<!-- ========================================================== -->
+
+<script>
+
+    // Obtenemos los select de región y comuna
+    const regionSelect = document.getElementById('region');
+    const comunaSelect = document.getElementById('comuna');
+
+
+    function filtrarComunas() {
+
+        // Región seleccionada
+        const regionSeleccionada = regionSelect.value;
+
+
+        // Recorremos todas las opciones de comuna
+        for (const opcion of comunaSelect.options) {
+
+
+            // La primera opción es "Todas"
+            if (opcion.value === '') {
+
+                opcion.hidden = false;
+
+                continue;
+
+            }
+
+
+            // Región a la que pertenece esta comuna
+            const regionComuna = opcion.dataset.region;
+
+
+            // Si no hay región seleccionada,
+            // mostramos todas las comunas
+            if (regionSeleccionada === '') {
+
+                opcion.hidden = false;
+
+            }
+
+            else {
+
+                // Solo mostramos comunas
+                // pertenecientes a la región seleccionada
+                opcion.hidden = (
+                    regionComuna !== regionSeleccionada
+                );
+
+            }
+
+        }
+
+    }
+
+
+
+    // Cuando cambia la región
+    regionSelect.addEventListener(
+        'change',
+        function () {
+
+            // Reiniciamos la comuna seleccionada
+            comunaSelect.value = '';
+
+            filtrarComunas();
+
+        }
+    );
+
+
+
+    // Ejecutamos al cargar la página
+    filtrarComunas();
+
+</script>
+
+
+{% endblock %}

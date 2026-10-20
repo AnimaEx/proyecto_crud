@@ -1,0 +1,32 @@
+# Entornos virtuales
+env/
+venv/
+.venv/
+
+# Credenciales y variables de entorno
+.env
+.env.*
+!.env.example
+
+# Caché de Python
+__pycache__/
+*.pyc
+
+# Bases de datos locales
+*.sqlite3
+
+# Archivos temporales
+*.log
+
+# Configuración local del editor
+.vscode/
+
+# Datos de usuarios de prueba
+proyecto_inmuebles/gestion_inmuebles/fixtures/usuarios_inmuebles.json
+
+# Fotografías subidas a la aplicación
+proyecto_inmuebles/media/
+
+# Informes generados por la aplicación
+proyecto_inmuebles/inmuebles_por_comuna.txt
+proyecto_inmuebles/inmuebles_por_region.txt

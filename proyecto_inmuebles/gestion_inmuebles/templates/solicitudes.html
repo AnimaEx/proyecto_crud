@@ -1,0 +1,1238 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Solicitudes
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ====================================================== -->
+    <!-- TÍTULO -->
+    <!-- ====================================================== -->
+
+    <div class="mb-4">
+
+        {% if perfil.tipo_usuario == 'arrendatario' %}
+
+            <h1 class="fw-bold mb-1">
+                Mis visitas
+            </h1>
+
+            <p class="text-muted mb-0">
+                Revisa, modifica o cancela tus visitas reservadas.
+            </p>
+
+        {% elif perfil.tipo_usuario == 'arrendador' %}
+
+            <h1 class="fw-bold mb-1">
+                Solicitudes
+            </h1>
+
+            <p class="text-muted mb-0">
+                Revisa las visitas reservadas para tus propiedades.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- ARRENDATARIO -->
+    <!-- ====================================================== -->
+
+    {% if perfil.tipo_usuario == 'arrendatario' %}
+
+        {% for solicitud in solicitudes %}
+
+            <!-- TARJETA -->
+
+            <div class="card solicitud-card shadow-sm border-0 mb-4">
+
+                <div class="row g-0 align-items-stretch">
+
+                    <!-- IMAGEN -->
+
+                    <div class="col-md-3">
+
+                        {% if solicitud.inmueble.imagen %}
+
+                            <img
+                                src="{{ solicitud.inmueble.imagen.url }}"
+                                alt="{{ solicitud.inmueble.nombre }}"
+                                class="w-100 h-100"
+                                style="min-height: 250px; object-fit: cover;"
+                            >
+
+                        {% else %}
+
+                            <div class="solicitud-imagen">
+
+                                <span class="text-center">
+                                    Sin imagen
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="col-md-6">
+
+                        <div class="card-body h-100 solicitud-info">
+
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+
+                                <h5 class="fw-bold mb-0">
+                                    {{ solicitud.inmueble.nombre }}
+                                </h5>
+
+                                <span class="badge bg-success">
+                                    Confirmada
+                                </span>
+
+                            </div>
+
+
+                            <p class="text-muted mb-2">
+                                {{ solicitud.inmueble.tipo_inmueble }}
+                                -
+                                {{ solicitud.inmueble.comuna }}
+                            </p>
+
+
+                            <p class="mb-3">
+
+                                <strong>
+                                    Dirección del inmueble:
+                                </strong>
+
+                                {{ solicitud.inmueble.direccion }}
+
+                            </p>
+
+
+                            <div class="visita-box">
+
+                                <p class="visita-titulo mb-2">
+                                    Visita reservada
+                                </p>
+
+                                <p class="mb-1">
+
+                                    <strong>
+                                        Fecha:
+                                    </strong>
+
+                                    {{ solicitud.fecha_visita|date:"d/m/Y" }}
+
+                                </p>
+
+                                <p class="mb-0">
+
+                                    <strong>
+                                        Hora:
+                                    </strong>
+
+                                    {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                </p>
+
+                            </div>
+
+
+                            {% if solicitud.comentarios %}
+
+                                <p class="mb-0 mt-3">
+
+                                    <strong>
+                                        Comentario:
+                                    </strong>
+
+                                    {{ solicitud.comentarios }}
+
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="col-md-3">
+
+                        <div class="card-body h-100 solicitud-acciones">
+
+                            <a
+                                href="{% url 'gestion_inmuebles:detalle_inmueble' solicitud.inmueble.id %}"
+                                class="btn btn-outline-secondary solicitud-btn"
+                            >
+                                Ver propiedad
+                            </a>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary solicitud-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modificarSolicitud{{ solicitud.id }}"
+                            >
+                                Modificar visita
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger solicitud-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#eliminarSolicitud{{ solicitud.id }}"
+                            >
+                                Cancelar visita
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================== -->
+            <!-- MODAL MODIFICAR VISITA -->
+            <!-- ========================================================== -->
+
+            <div
+                class="modal fade"
+                id="modificarSolicitud{{ solicitud.id }}"
+                tabindex="-1"
+                aria-labelledby="modificarSolicitudLabel{{ solicitud.id }}"
+                aria-hidden="true"
+            >
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5
+                                class="modal-title"
+                                id="modificarSolicitudLabel{{ solicitud.id }}"
+                            >
+                                Modificar visita
+                            </h5>
+
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"
+                            >
+                            </button>
+
+                        </div>
+
+
+                        <form
+                            method="POST"
+                            action="{% url 'gestion_inmuebles:editar_solicitud' solicitud.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <div class="modal-body">
+
+                                <!-- PROPIEDAD -->
+
+                                <div class="border rounded p-3 bg-light mb-4">
+
+                                    <h6 class="fw-bold mb-1">
+                                        {{ solicitud.inmueble.nombre }}
+                                    </h6>
+
+                                    <p class="text-muted mb-0">
+                                        {{ solicitud.inmueble.direccion }}
+                                    </p>
+
+                                </div>
+
+
+                                <!-- HORARIO ACTUAL -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label fw-semibold">
+                                        Horario actual
+                                    </label>
+
+                                    <div class="border rounded p-3">
+
+                                        <strong>
+                                            {{ solicitud.fecha_visita|date:"d/m/Y" }}
+                                        </strong>
+
+                                        -
+
+                                        {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- HORARIO DISPONIBLE -->
+
+                                <div class="mb-3">
+
+                                    <label
+                                        for="horario{{ solicitud.id }}"
+                                        class="form-label fw-semibold"
+                                    >
+                                        Horario de visita
+                                    </label>
+
+
+                                    <select
+                                        name="horario"
+                                        id="horario{{ solicitud.id }}"
+                                        class="form-select"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            Selecciona un horario
+                                        </option>
+
+
+                                        {% for horario in solicitud.inmueble.horarios_visita.all %}
+
+                                            {% if horario.disponible or horario.id == solicitud.horario_id %}
+
+                                                <option
+                                                    value="{{ horario.id }}"
+                                                    {% if horario.id == solicitud.horario_id %}
+                                                        selected
+                                                    {% endif %}
+                                                >
+
+                                                    {{ horario.fecha|date:"d/m/Y" }}
+                                                    -
+                                                    {{ horario.hora|time:"H:i" }} hrs
+
+                                                    {% if horario.id == solicitud.horario_id %}
+                                                        — Actual
+                                                    {% endif %}
+
+                                                </option>
+
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </select>
+
+
+                                    <div class="form-text">
+                                        Solo puedes seleccionar horarios publicados
+                                        y disponibles por el arrendador.
+                                    </div>
+
+                                </div>
+
+
+                                <!-- COMENTARIOS -->
+
+                                <div class="mb-3">
+
+                                    <label
+                                        for="comentarios{{ solicitud.id }}"
+                                        class="form-label"
+                                    >
+                                        Comentarios
+                                    </label>
+
+                                    <textarea
+                                        id="comentarios{{ solicitud.id }}"
+                                        name="comentarios"
+                                        class="form-control"
+                                        rows="4"
+                                        placeholder="Puedes agregar un comentario..."
+                                    >{{ solicitud.comentarios }}</textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="modal-footer">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Guardar cambios
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================== -->
+            <!-- MODAL CANCELAR VISITA -->
+            <!-- ========================================================== -->
+
+            <div
+                class="modal fade"
+                id="eliminarSolicitud{{ solicitud.id }}"
+                tabindex="-1"
+                aria-labelledby="eliminarSolicitudLabel{{ solicitud.id }}"
+                aria-hidden="true"
+            >
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5
+                                class="modal-title"
+                                id="eliminarSolicitudLabel{{ solicitud.id }}"
+                            >
+                                Cancelar visita
+                            </h5>
+
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"
+                            >
+                            </button>
+
+                        </div>
+
+
+                        <div class="modal-body">
+
+                            <p>
+                                ¿Estás seguro de que deseas cancelar esta visita?
+                            </p>
+
+
+                            <div class="border rounded p-3 bg-light">
+
+                                <h6 class="fw-bold mb-2">
+                                    {{ solicitud.inmueble.nombre }}
+                                </h6>
+
+
+                                <p class="mb-1">
+
+                                    <strong>
+                                        Fecha:
+                                    </strong>
+
+                                    {{ solicitud.fecha_visita|date:"d/m/Y" }}
+
+                                </p>
+
+
+                                <p class="mb-0">
+
+                                    <strong>
+                                        Hora:
+                                    </strong>
+
+                                    {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                </p>
+
+                            </div>
+
+
+                            <p class="text-danger small mt-3 mb-0">
+                                Al cancelar la visita, este horario volverá
+                                a quedar disponible para otro arrendatario.
+                            </p>
+
+                        </div>
+
+
+                        <div class="modal-footer">
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Volver
+                            </button>
+
+
+                            <form
+                                method="POST"
+                                action="{% url 'gestion_inmuebles:eliminar_solicitud' solicitud.id %}"
+                                class="m-0"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    Sí, cancelar visita
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        {% empty %}
+
+            <div class="alert alert-light border">
+                Todavía no tienes visitas agendadas.
+            </div>
+
+        {% endfor %}
+
+
+    <!-- ====================================================== -->
+    <!-- ARRENDADOR -->
+    <!-- ====================================================== -->
+
+    {% elif perfil.tipo_usuario == 'arrendador' %}
+
+        <!-- ====================================================== -->
+        <!-- NOTIFICACIONES: NUEVAS SOLICITUDES -->
+        <!-- ====================================================== -->
+
+        {% if nuevas_solicitudes %}
+
+            <section class="mb-5">
+
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+                    <div>
+
+                        <h3 class="fw-bold mb-1">
+                            Nuevas solicitudes
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Haz clic en una tarjeta para marcar solamente esa solicitud como vista.
+                        </p>
+
+                    </div>
+
+                    <span class="badge rounded-pill bg-primary fs-6">
+                        {{ nuevas_solicitudes|length }}
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="carouselNuevasSolicitudes"
+                    class="carousel slide bg-light border rounded-4 p-3 p-md-4"
+                >
+
+                    <div class="carousel-inner">
+
+
+                        {% for solicitud in nuevas_solicitudes %}
+
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                                <div class="d-flex justify-content-center px-md-5">
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'gestion_inmuebles:marcar_notificacion_vista' solicitud.id 'reserva' %}"
+                                        class="w-100"
+                                        style="max-width: 900px;"
+                                    >
+
+                                        {% csrf_token %}
+
+
+                                        <button
+                                            type="submit"
+                                            class="card border-0 shadow-sm w-100 p-0 text-start overflow-hidden"
+                                            title="Marcar esta solicitud como vista"
+                                        >
+
+                                            <div class="row g-0 align-items-stretch">
+
+
+                                                <!-- IMAGEN -->
+
+                                                <div class="col-md-4">
+
+                                                    {% if solicitud.inmueble.imagen %}
+
+                                                        <img
+                                                            src="{{ solicitud.inmueble.imagen.url }}"
+                                                            alt="{{ solicitud.inmueble.nombre }}"
+                                                            class="w-100 h-100"
+                                                            style="min-height: 220px; object-fit: cover;"
+                                                        >
+
+                                                    {% else %}
+
+                                                        <div
+                                                            class="bg-secondary-subtle d-flex align-items-center justify-content-center h-100"
+                                                            style="min-height: 220px;"
+                                                        >
+                                                            <span class="text-secondary">
+                                                                Sin imagen
+                                                            </span>
+                                                        </div>
+
+                                                    {% endif %}
+
+                                                </div>
+
+
+                                                <!-- INFORMACIÓN -->
+
+                                                <div class="col-md-8">
+
+                                                    <div class="card-body p-4">
+
+                                                        <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+
+                                                            <span class="badge bg-primary">
+                                                                Nueva reserva
+                                                            </span>
+
+                                                            <span class="small text-muted">
+                                                                {{ solicitud.fecha_creacion|date:"d/m/Y H:i" }}
+                                                            </span>
+
+                                                        </div>
+
+
+                                                        <h4 class="fw-bold mb-3">
+                                                            {{ solicitud.inmueble.nombre }}
+                                                        </h4>
+
+
+                                                        <p class="mb-1">
+
+                                                            <strong>
+                                                                Arrendatario:
+                                                            </strong>
+
+                                                            {{ solicitud.arrendatario.user.first_name }}
+                                                            {{ solicitud.arrendatario.user.last_name }}
+
+                                                        </p>
+
+
+                                                        <p class="mb-3">
+
+                                                            <strong>
+                                                                Visita:
+                                                            </strong>
+
+                                                            {{ solicitud.fecha_visita|date:"d/m/Y" }}
+                                                            -
+                                                            {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                                        </p>
+
+
+                                                        <p class="small text-primary mb-0 fw-semibold">
+                                                            Haz clic para marcar esta notificación como vista.
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                    {% if nuevas_solicitudes|length > 1 %}
+
+                        <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselNuevasSolicitudes"
+                            data-bs-slide="prev"
+                        >
+                            <span
+                                class="carousel-control-prev-icon"
+                                aria-hidden="true"
+                                style="background-color: rgba(0,0,0,.65); border-radius: 50%; width: 3rem; height: 3rem; background-size: 50% 50%;"
+                            >
+                            </span>
+
+                            <span class="visually-hidden">
+                                Anterior
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselNuevasSolicitudes"
+                            data-bs-slide="next"
+                        >
+                            <span
+                                class="carousel-control-next-icon"
+                                aria-hidden="true"
+                                style="background-color: rgba(0,0,0,.65); border-radius: 50%; width: 3rem; height: 3rem; background-size: 50% 50%;"
+                            >
+                            </span>
+
+                            <span class="visually-hidden">
+                                Siguiente
+                            </span>
+
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+
+        <!-- ====================================================== -->
+        <!-- NOTIFICACIONES: SOLICITUDES CANCELADAS -->
+        <!-- ====================================================== -->
+
+        {% if cancelaciones_nuevas %}
+
+            <section class="mb-5">
+
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+                    <div>
+
+                        <h3 class="fw-bold mb-1">
+                            Solicitudes canceladas
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Estas visitas fueron canceladas por los arrendatarios.
+                        </p>
+
+                    </div>
+
+                    <span class="badge rounded-pill bg-danger fs-6">
+                        {{ cancelaciones_nuevas|length }}
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="carouselCancelaciones"
+                    class="carousel slide bg-light border border-danger-subtle rounded-4 p-3 p-md-4"
+                >
+
+                    <div class="carousel-inner">
+
+
+                        {% for solicitud in cancelaciones_nuevas %}
+
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                                <div class="d-flex justify-content-center px-md-5">
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'gestion_inmuebles:marcar_notificacion_vista' solicitud.id 'cancelacion' %}"
+                                        class="w-100"
+                                        style="max-width: 900px;"
+                                    >
+
+                                        {% csrf_token %}
+
+
+                                        <button
+                                            type="submit"
+                                            class="card border-danger-subtle shadow-sm w-100 p-0 text-start overflow-hidden"
+                                            title="Marcar esta cancelación como vista"
+                                        >
+
+                                            <div class="row g-0 align-items-stretch">
+
+
+                                                <!-- IMAGEN -->
+
+                                                <div class="col-md-4">
+
+                                                    {% if solicitud.inmueble.imagen %}
+
+                                                        <img
+                                                            src="{{ solicitud.inmueble.imagen.url }}"
+                                                            alt="{{ solicitud.inmueble.nombre }}"
+                                                            class="w-100 h-100"
+                                                            style="min-height: 220px; object-fit: cover;"
+                                                        >
+
+                                                    {% else %}
+
+                                                        <div
+                                                            class="bg-secondary-subtle d-flex align-items-center justify-content-center h-100"
+                                                            style="min-height: 220px;"
+                                                        >
+                                                            <span class="text-secondary">
+                                                                Sin imagen
+                                                            </span>
+                                                        </div>
+
+                                                    {% endif %}
+
+                                                </div>
+
+
+                                                <!-- INFORMACIÓN -->
+
+                                                <div class="col-md-8">
+
+                                                    <div class="card-body p-4">
+
+                                                        <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+
+                                                            <span class="badge bg-danger">
+                                                                Cancelada
+                                                            </span>
+
+                                                            {% if solicitud.fecha_cancelacion %}
+
+                                                                <span class="small text-muted">
+                                                                    {{ solicitud.fecha_cancelacion|date:"d/m/Y H:i" }}
+                                                                </span>
+
+                                                            {% endif %}
+
+                                                        </div>
+
+
+                                                        <h4 class="fw-bold mb-3">
+                                                            {{ solicitud.inmueble.nombre }}
+                                                        </h4>
+
+
+                                                        <p class="mb-1">
+
+                                                            <strong>
+                                                                Arrendatario:
+                                                            </strong>
+
+                                                            {{ solicitud.arrendatario.user.first_name }}
+                                                            {{ solicitud.arrendatario.user.last_name }}
+
+                                                        </p>
+
+
+                                                        <p class="mb-3">
+
+                                                            <strong>
+                                                                Visita que fue cancelada:
+                                                            </strong>
+
+                                                            {{ solicitud.fecha_visita|date:"d/m/Y" }}
+                                                            -
+                                                            {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                                        </p>
+
+
+                                                        <p class="small text-danger mb-0 fw-semibold">
+                                                            Haz clic para marcar esta cancelación como vista.
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                    {% if cancelaciones_nuevas|length > 1 %}
+
+                        <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselCancelaciones"
+                            data-bs-slide="prev"
+                        >
+                            <span
+                                class="carousel-control-prev-icon"
+                                aria-hidden="true"
+                                style="background-color: rgba(0,0,0,.65); border-radius: 50%; width: 3rem; height: 3rem; background-size: 50% 50%;"
+                            >
+                            </span>
+
+                            <span class="visually-hidden">
+                                Anterior
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselCancelaciones"
+                            data-bs-slide="next"
+                        >
+                            <span
+                                class="carousel-control-next-icon"
+                                aria-hidden="true"
+                                style="background-color: rgba(0,0,0,.65); border-radius: 50%; width: 3rem; height: 3rem; background-size: 50% 50%;"
+                            >
+                            </span>
+
+                            <span class="visually-hidden">
+                                Siguiente
+                            </span>
+
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+
+        <!-- ====================================================== -->
+        <!-- VISITAS RESERVADAS -->
+        <!-- ====================================================== -->
+
+        <section>
+
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+
+                <div>
+
+                    <h3 class="fw-bold mb-1">
+                        Visitas reservadas
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Revisa las visitas activas para tus propiedades.
+                    </p>
+
+                </div>
+
+
+                <!-- ================================================== -->
+                <!-- MOSTRAR / ORDENAR -->
+                <!-- ================================================== -->
+
+                <form method="GET">
+
+                    <div>
+
+                        <label
+                            for="orden"
+                            class="form-label fw-semibold"
+                        >
+                            Filtrar / ordenar
+                        </label>
+
+
+                        <select
+                            name="orden"
+                            id="orden"
+                            class="form-select"
+                            onchange="this.form.submit()"
+                        >
+
+                            <option
+                                value="todas"
+                                {% if orden_seleccionado == 'todas' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Todas las reservas
+                            </option>
+
+
+                            <option
+                                value="visita"
+                                {% if orden_seleccionado == 'visita' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Fecha de visita: más cercana
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- ================================================== -->
+            <!-- TARJETAS DE VISITAS ACTIVAS -->
+            <!-- ================================================== -->
+
+            {% for solicitud in solicitudes %}
+
+                <div class="card solicitud-card shadow-sm border-0 mb-4">
+
+                    <div class="row g-0 align-items-stretch">
+
+
+                        <!-- IMAGEN -->
+
+                        <div class="col-md-3">
+
+                            {% if solicitud.inmueble.imagen %}
+
+                                <img
+                                    src="{{ solicitud.inmueble.imagen.url }}"
+                                    alt="{{ solicitud.inmueble.nombre }}"
+                                    class="w-100 h-100"
+                                    style="min-height: 250px; object-fit: cover;"
+                                >
+
+                            {% else %}
+
+                                <div class="solicitud-imagen">
+
+                                    <span class="text-center">
+                                        Sin imagen
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- INFORMACIÓN -->
+
+                        <div class="col-md-6">
+
+                            <div class="card-body h-100 solicitud-info">
+
+                                <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+
+                                    <h5 class="fw-bold mb-0">
+                                        {{ solicitud.inmueble.nombre }}
+                                    </h5>
+
+
+                                    <span class="badge bg-success">
+                                        Confirmada
+                                    </span>
+
+                                </div>
+
+
+                                <p class="mb-1">
+
+                                    <strong>
+                                        Arrendatario:
+                                    </strong>
+
+                                    {{ solicitud.arrendatario.user.first_name }}
+                                    {{ solicitud.arrendatario.user.last_name }}
+
+                                </p>
+
+
+                                <p class="mb-1">
+
+                                    <strong>
+                                        Correo:
+                                    </strong>
+
+                                    {{ solicitud.arrendatario.user.email }}
+
+                                </p>
+
+
+                                <p class="mb-3">
+
+                                    <strong>
+                                        Teléfono:
+                                    </strong>
+
+                                    {{ solicitud.arrendatario.telefono }}
+
+                                </p>
+
+
+                                <div class="visita-box">
+
+                                    <p class="visita-titulo mb-2">
+                                        Visita reservada
+                                    </p>
+
+
+                                    <p class="mb-1">
+
+                                        <strong>
+                                            Fecha:
+                                        </strong>
+
+                                        {{ solicitud.fecha_visita|date:"d/m/Y" }}
+
+                                    </p>
+
+
+                                    <p class="mb-0">
+
+                                        <strong>
+                                            Hora:
+                                        </strong>
+
+                                        {{ solicitud.hora_visita|time:"H:i" }} hrs
+
+                                    </p>
+
+
+                                    
+
+                                </div>
+
+
+                                {% if solicitud.comentarios %}
+
+                                    <p class="mb-0 mt-3">
+
+                                        <strong>
+                                            Comentario:
+                                        </strong>
+
+                                        {{ solicitud.comentarios }}
+
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ACCIONES ARRENDADOR -->
+
+                        <div class="col-md-3">
+
+                            <div class="card-body h-100 solicitud-acciones">
+
+                                <a
+                                    href="{% url 'gestion_inmuebles:detalle_inmueble' solicitud.inmueble.id %}"
+                                    class="btn btn-outline-secondary solicitud-btn"
+                                >
+                                    Ver propiedad
+                                </a>
+
+
+                                <a
+                                    href="{% url 'gestion_inmuebles:administrar_horarios' solicitud.inmueble.id %}"
+                                    class="btn btn-outline-primary solicitud-btn"
+                                >
+                                    Administrar horarios
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="alert alert-light border">
+                    Todavía no tienes visitas reservadas.
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

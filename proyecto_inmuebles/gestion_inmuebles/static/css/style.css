@@ -1,0 +1,1127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+
+/* ========================================================= */
+/* PALETA GENERAL */
+/* ========================================================= */
+
+:root {
+
+    --azul-profundo: #172554;
+    --azul-profundo-hover: #111C3D;
+
+    --azul-rey: #2563EB;
+    --azul-rey-hover: #1D4ED8;
+    --azul-claro: #EFF6FF;
+
+    --dorado: #D6A84B;
+    --dorado-hover: #BD9139;
+    --dorado-claro: #FFF7E6;
+
+    /* FONDOS MÁS SUAVES */
+    --fondo: #E9EDF3;
+    --blanco: #F9FAFB;
+    --superficie-suave: #F1F3F6;
+
+    --texto: #172033;
+    --texto-secundario: #64748B;
+
+    --borde: #D5DAE3;
+
+    --verde: #16A34A;
+    --rojo: #DC2626;
+
+    --sombra-suave:
+        0 4px 16px rgba(23, 37, 84, 0.08);
+
+    --sombra-media:
+        0 10px 28px rgba(23, 37, 84, 0.15);
+
+}
+
+
+/* ========================================================= */
+/* ESTRUCTURA GENERAL */
+/* ========================================================= */
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    background-color: var(--fondo) !important;
+
+    color: var(--texto);
+
+    font-family: "Inter", sans-serif;
+
+}
+
+
+/* ========================================================= */
+/* TÍTULOS */
+/* ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+    color: var(--azul-profundo);
+
+    font-family: "Playfair Display", serif;
+
+    font-weight: 700;
+
+}
+
+
+h1 {
+
+    letter-spacing: -0.6px;
+
+}
+
+
+p,
+label,
+small,
+span,
+a,
+button,
+input,
+select,
+textarea {
+
+    font-family: "Inter", sans-serif;
+
+}
+
+
+.text-muted {
+
+    color: var(--texto-secundario) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* NAVBAR */
+/* ========================================================= */
+
+.navbar {
+
+    background-color: var(--azul-profundo) !important;
+
+    border-bottom:
+        3px solid var(--dorado) !important;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.18) !important;
+
+}
+
+
+/* ========================================================= */
+/* LOGO */
+/* ========================================================= */
+
+.navbar-brand {
+
+    color: var(--dorado) !important;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.4rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+}
+
+
+.navbar-brand:hover {
+
+    color: #F1C76C !important;
+
+}
+
+
+
+/* ========================================================= */
+/* LINKS DEL NAVBAR */
+/* ========================================================= */
+
+.navbar .nav-link {
+
+    color: rgba(255, 255, 255, 0.85) !important;
+
+    font-weight: 500;
+
+    padding-left: 12px !important;
+
+    padding-right: 12px !important;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.navbar .nav-link:hover {
+
+    color: var(--dorado) !important;
+
+}
+
+
+/* LINK ACTIVO */
+
+.navbar .nav-link.text-primary {
+
+    color: var(--dorado) !important;
+
+    font-weight: 700 !important;
+
+}
+
+
+
+/* ========================================================= */
+/* TEXTO DEL USUARIO */
+/* ========================================================= */
+
+.navbar-text {
+
+    color: rgba(255, 255, 255, 0.72) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN RESPONSIVE DEL NAVBAR */
+/* ========================================================= */
+
+.navbar-toggler {
+
+    border-color: rgba(255, 255, 255, 0.45);
+
+}
+
+
+.navbar-toggler-icon {
+
+    filter: invert(1);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTONES GENERALES */
+/* ========================================================= */
+
+.btn {
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+
+}
+
+
+.btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN PRINCIPAL */
+/* ========================================================= */
+
+.btn-primary {
+
+    background-color: var(--azul-rey);
+
+    border-color: var(--azul-rey);
+
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus {
+
+    background-color: var(--azul-rey-hover);
+
+    border-color: var(--azul-rey-hover);
+
+    box-shadow:
+        0 6px 16px rgba(37, 99, 235, 0.25);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN OUTLINE PRIMARY */
+/* ========================================================= */
+
+.btn-outline-primary {
+
+    color: var(--azul-rey);
+
+    border-color: var(--azul-rey);
+
+}
+
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+
+    color: var(--blanco);
+
+    background-color: var(--azul-rey);
+
+    border-color: var(--azul-rey);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTONES DEL NAVBAR */
+/* ========================================================= */
+
+.navbar .btn-outline-primary {
+
+    color: var(--dorado);
+
+    border-color: var(--dorado);
+
+}
+
+
+.navbar .btn-outline-primary:hover {
+
+    color: var(--azul-profundo);
+
+    background-color: var(--dorado);
+
+    border-color: var(--dorado);
+
+}
+
+
+.navbar .btn-primary {
+
+    color: var(--azul-profundo);
+
+    background-color: var(--dorado);
+
+    border-color: var(--dorado);
+
+}
+
+
+.navbar .btn-primary:hover {
+
+    background-color: #E4BA60;
+
+    border-color: #E4BA60;
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN SECUNDARIO */
+/* ========================================================= */
+
+.btn-outline-secondary {
+
+    color: #475569;
+
+    border-color: #CBD5E1;
+
+}
+
+
+.btn-outline-secondary:hover {
+
+    color: var(--azul-profundo);
+
+    background-color: var(--dorado-claro);
+
+    border-color: var(--dorado);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN DANGER */
+/* ========================================================= */
+
+.btn-outline-danger {
+
+    color: var(--rojo);
+
+    border-color: #FCA5A5;
+
+}
+
+
+.btn-outline-danger:hover {
+
+    color: var(--blanco);
+
+    background-color: var(--rojo);
+
+    border-color: var(--rojo);
+
+}
+
+
+
+/* ========================================================= */
+/* BOTÓN CERRAR SESIÓN EN NAVBAR */
+/* ========================================================= */
+
+.navbar .btn-outline-danger {
+
+    color: #FFFFFF;
+
+    border-color: rgba(255, 255, 255, 0.55);
+
+}
+
+
+.navbar .btn-outline-danger:hover {
+
+    background-color: var(--rojo);
+
+    border-color: var(--rojo);
+
+}
+
+
+
+/* ========================================================= */
+/* BADGES */
+/* ========================================================= */
+
+.badge.bg-primary {
+
+    background-color: var(--azul-rey) !important;
+
+}
+
+
+.badge.bg-success {
+
+    background-color: var(--verde) !important;
+
+}
+
+
+.badge.bg-danger {
+
+    background-color: var(--rojo) !important;
+
+}
+
+
+.badge.bg-warning {
+
+    color: #5B4215 !important;
+
+    background-color: var(--dorado) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* TARJETAS GENERALES */
+/* ========================================================= */
+
+.card {
+
+    background-color: var(--blanco);
+
+    border:
+        1px solid var(--borde) !important;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: var(--sombra-suave);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+
+}
+
+
+.card.shadow-sm {
+
+    box-shadow: var(--sombra-suave) !important;
+
+}
+
+
+.card:hover {
+
+    border-color:
+        rgba(214, 168, 75, 0.7) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* CARDS DEL HOME */
+/* ========================================================= */
+
+.row.g-4 .card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: var(--sombra-media);
+
+}
+
+
+/* PRECIO */
+
+.card-body h4 {
+
+    color: var(--azul-rey);
+
+    font-family: "Inter", sans-serif;
+
+    font-weight: 700;
+
+}
+
+
+/* NOMBRE DEL INMUEBLE */
+
+.card-title {
+
+    color: var(--azul-profundo);
+
+}
+
+
+/* FOOTER DE LA CARD */
+
+.card-footer {
+
+    border-top:
+        1px solid var(--borde);
+
+}
+
+
+
+/* ========================================================= */
+/* FILTROS DEL HOME */
+/* ========================================================= */
+
+.container > .card {
+
+    border-top:
+        3px solid var(--dorado) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* FORMULARIOS */
+/* ========================================================= */
+
+.form-label {
+
+    color: var(--azul-profundo);
+
+    font-weight: 600;
+
+}
+
+
+.form-control,
+.form-select {
+
+    min-height: 44px;
+
+    background-color: var(--blanco);
+
+    border:
+        1px solid #CBD5E1;
+
+    border-radius: 8px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: var(--azul-rey);
+
+    box-shadow:
+        0 0 0 0.2rem rgba(37, 99, 235, 0.14);
+
+}
+
+
+
+/* ========================================================= */
+/* TARJETAS DE SOLICITUD */
+/* ========================================================= */
+
+.solicitud-card {
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    border-left:
+        4px solid var(--azul-rey) !important;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+}
+
+
+
+/* ========================================================= */
+/* HOVER TARJETA SOLICITUD */
+/* ========================================================= */
+
+.solicitud-card:hover {
+
+    transform: translateY(-5px);
+
+    border-left-color:
+        var(--dorado) !important;
+
+    box-shadow:
+        var(--sombra-media) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* IMAGEN DEL INMUEBLE */
+/* ========================================================= */
+
+.solicitud-imagen {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 250px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #EFF6FF,
+            #E2E8F0
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--texto-secundario);
+
+    border-right:
+        1px solid var(--borde);
+
+}
+
+
+
+/* ========================================================= */
+/* INFORMACIÓN SOLICITUD */
+/* ========================================================= */
+
+.solicitud-info {
+
+    padding: 24px;
+
+}
+
+
+
+/* ========================================================= */
+/* VISITA RESERVADA */
+/* ========================================================= */
+
+.visita-box {
+
+    margin-top: 10px;
+
+    padding: 14px 16px;
+
+    background-color: var(--azul-claro);
+
+    border-left:
+        4px solid var(--dorado);
+
+    border-radius: 8px;
+
+}
+
+
+.visita-titulo {
+
+    color: var(--azul-rey);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+
+/* ========================================================= */
+/* ACCIONES SOLICITUD */
+/* ========================================================= */
+
+.solicitud-acciones {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding-left: 24px;
+
+    padding-right: 24px;
+
+}
+
+
+
+/* ========================================================= */
+/* BOTONES SOLICITUD */
+/* ========================================================= */
+
+.solicitud-btn {
+
+    width: 100%;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+
+.solicitud-btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+
+/* ========================================================= */
+/* ADMINISTRAR HORARIOS */
+/* ========================================================= */
+
+.horario-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 16px;
+
+    margin-bottom: 12px;
+
+    background-color: var(--blanco);
+
+    border:
+        1px solid var(--borde);
+
+    border-left:
+        4px solid var(--dorado);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 12px rgba(23, 37, 84, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.horario-item:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(23, 37, 84, 0.12);
+
+}
+
+
+
+/* ========================================================= */
+/* CARRUSELES DE NOTIFICACIONES */
+/* ========================================================= */
+
+.carousel {
+
+    border-color:
+        rgba(214, 168, 75, 0.45) !important;
+
+}
+
+
+.carousel .card {
+
+    border:
+        1px solid rgba(37, 99, 235, 0.16) !important;
+
+}
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+
+    background-color:
+        var(--azul-profundo) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* MODALES */
+/* ========================================================= */
+
+.modal-content {
+
+    border:
+        1px solid rgba(214, 168, 75, 0.5);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 18px 45px rgba(23, 37, 84, 0.22);
+
+}
+
+
+.modal-header {
+
+    border-bottom-color:
+        var(--borde);
+
+}
+
+
+.modal-footer {
+
+    border-top-color:
+        var(--borde);
+
+}
+
+
+
+/* ========================================================= */
+/* ALERTAS */
+/* ========================================================= */
+
+.alert {
+
+    border-radius: 10px;
+
+}
+
+
+
+/* ========================================================= */
+/* FOOTER */
+/* ========================================================= */
+
+.site-footer {
+
+    margin-top: 40px;
+
+    background-color:
+        var(--azul-profundo) !important;
+
+    border-top:
+        4px solid var(--dorado) !important;
+
+    color:
+        rgba(255, 255, 255, 0.92);
+
+}
+
+
+.site-footer h6 {
+
+    color: var(--dorado);
+
+    font-size: 1.1rem;
+
+}
+
+
+.site-footer .text-muted {
+
+    color:
+        rgba(255, 255, 255, 0.68) !important;
+
+}
+
+
+
+/* ========================================================= */
+/* LINKS */
+/* ========================================================= */
+
+a {
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
+
+}
+
+
+
+/* ========================================================= */
+/* SCROLLBAR */
+/* ========================================================= */
+
+::-webkit-scrollbar {
+
+    width: 10px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+    background: #EEF2F7;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background: #94A3B8;
+
+    border-radius: 10px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background: var(--azul-rey);
+
+}
+
+
+
+/* ========================================================= */
+/* SELECCIÓN DE TEXTO */
+/* ========================================================= */
+
+::selection {
+
+    color: var(--azul-profundo);
+
+    background-color: var(--dorado);
+
+}
+
+
+
+/* ========================================================= */
+/* RESPONSIVE TABLET / MÓVIL */
+/* ========================================================= */
+
+@media (max-width: 991px) {
+
+    .navbar-collapse {
+
+        padding-top: 15px;
+
+        padding-bottom: 10px;
+
+    }
+
+
+    .navbar .nav-link {
+
+        padding-left: 0 !important;
+
+        padding-top: 8px;
+
+        padding-bottom: 8px;
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* RESPONSIVE MÓVIL */
+/* ========================================================= */
+
+@media (max-width: 767px) {
+
+
+    .solicitud-imagen {
+
+        min-height: 200px;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid var(--borde);
+
+    }
+
+
+    .solicitud-info {
+
+        padding: 20px;
+
+    }
+
+
+    .solicitud-acciones {
+
+        padding-top: 0;
+
+        padding-left: 20px;
+
+        padding-right: 20px;
+
+        padding-bottom: 24px;
+
+    }
+
+
+    .solicitud-btn {
+
+        width: 100%;
+
+    }
+
+
+}
+
+
+
+/* ========================================================= */
+/* RESPONSIVE TELÉFONOS PEQUEÑOS */
+/* ========================================================= */
+
+@media (max-width: 576px) {
+
+
+    h1 {
+
+        font-size: 2rem;
+
+    }
+
+
+    .navbar-brand {
+
+        font-size: 1.25rem;
+
+    }
+
+
+    .horario-item {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .card-body {
+
+        padding: 18px;
+
+    }
+
+
+}

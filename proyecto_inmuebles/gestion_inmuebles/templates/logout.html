@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+    Sesión cerrada
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="container py-5">
+
+
+    <div class="row justify-content-center">
+
+
+        <div class="col-md-8 col-lg-6">
+
+
+            <!-- ====================================================== -->
+            <!-- TARJETA DE CIERRE DE SESIÓN -->
+            <!-- ====================================================== -->
+
+            <div class="card shadow-sm border-0">
+
+
+                <div class="card-body text-center p-5">
+
+
+                    <!-- ================================================== -->
+                    <!-- TÍTULO -->
+                    <!-- ================================================== -->
+
+                    <h1 class="fw-bold mb-3">
+
+                        Sesión cerrada
+
+                    </h1>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- MENSAJE -->
+                    <!-- ================================================== -->
+
+                    <p class="text-muted mb-4">
+
+                        Has cerrado sesión correctamente.
+
+                    </p>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- DECORACIÓN -->
+                    <!-- ================================================== -->
+
+                    <div
+                        class="mx-auto mb-4"
+                        style="
+                            width: 70px;
+                            height: 4px;
+                            background-color: var(--dorado);
+                            border-radius: 10px;
+                        "
+                    >
+                    </div>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- BOTONES -->
+                    <!-- ================================================== -->
+
+                    <div
+                        class="
+                            d-flex
+                            justify-content-center
+                            gap-3
+                            flex-wrap
+                        "
+                    >
+
+
+                        <!-- VOLVER AL INICIO -->
+
+                        <a
+                            href="{% url 'gestion_inmuebles:home' %}"
+                            class="btn btn-outline-primary px-4"
+                        >
+
+                            Volver al inicio
+
+                        </a>
+
+
+
+                        <!-- INICIAR SESIÓN -->
+
+                        <a
+                            href="{% url 'gestion_inmuebles:login' %}"
+                            class="btn btn-primary px-4"
+                        >
+
+                            Iniciar sesión
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

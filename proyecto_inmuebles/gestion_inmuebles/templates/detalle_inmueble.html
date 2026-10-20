@@ -1,0 +1,989 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+    {{ inmueble.nombre }}
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container py-4">
+
+
+    <!-- ====================================================== -->
+    <!-- BOTÓN VOLVER -->
+    <!-- ====================================================== -->
+
+    <a
+        href="{% url 'gestion_inmuebles:home' %}"
+        class="btn btn-outline-secondary mb-4"
+    >
+        ← Volver
+    </a>
+
+
+
+    <!-- ====================================================== -->
+    <!-- INFORMACIÓN PRINCIPAL -->
+    <!-- ====================================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- ================================================== -->
+        <!-- IMAGEN -->
+        <!-- ================================================== -->
+
+        <div class="col-lg-7">
+
+
+            {% if inmueble.imagen %}
+
+
+                <img
+                    src="{{ inmueble.imagen.url }}"
+                    alt="{{ inmueble.nombre }}"
+                    class="img-fluid rounded shadow-sm w-100"
+                    style="
+                        height: 450px;
+                        object-fit: cover;
+                    "
+                >
+
+
+            {% else %}
+
+
+                <div
+                    class="bg-secondary-subtle d-flex align-items-center justify-content-center rounded"
+                    style="height: 450px;"
+                >
+
+                    <span class="text-secondary">
+                        Sin imagen
+                    </span>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- ================================================== -->
+        <!-- INFORMACIÓN DEL INMUEBLE -->
+        <!-- ================================================== -->
+
+        <div class="col-lg-5">
+
+
+            <!-- TIPO -->
+
+            <p class="text-muted mb-1">
+
+                {{ inmueble.tipo_inmueble }}
+
+            </p>
+
+
+
+            <!-- NOMBRE -->
+
+            <h1>
+
+                {{ inmueble.nombre }}
+
+            </h1>
+
+
+
+            <!-- PRECIO -->
+
+            <h2 class="text-primary mb-4">
+
+                ${{ inmueble.precio_mensual }}
+
+            </h2>
+
+
+
+            <!-- UBICACIÓN -->
+
+            <p>
+
+                <strong>
+                    Comuna:
+                </strong>
+
+                {{ inmueble.comuna }}
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Dirección:
+                </strong>
+
+                {{ inmueble.direccion }}
+
+            </p>
+
+
+
+            <hr>
+
+
+
+            <!-- ====================================================== -->
+            <!-- CARACTERÍSTICAS -->
+            <!-- ====================================================== -->
+
+            <div class="row text-center my-4">
+
+
+                <!-- HABITACIONES -->
+
+                <div class="col">
+
+                    <strong>
+
+                        {{ inmueble.habitaciones }}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Habitaciones
+                    </small>
+
+                </div>
+
+
+
+                <!-- BAÑOS -->
+
+                <div class="col">
+
+                    <strong>
+
+                        {{ inmueble.banos }}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Baños
+                    </small>
+
+                </div>
+
+
+
+                <!-- ESTACIONAMIENTOS -->
+
+                <div class="col">
+
+                    <strong>
+
+                        {{ inmueble.estacionamientos }}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Estacionamientos
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+
+            <hr>
+
+
+
+            <!-- METROS -->
+
+            <p>
+
+                <strong>
+                    Metros construidos:
+                </strong>
+
+                {{ inmueble.m2_construidos }} m²
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Metros totales:
+                </strong>
+
+                {{ inmueble.m2_totales }} m²
+
+            </p>
+
+
+
+            <!-- ====================================================== -->
+            <!-- RESERVAR VISITA -->
+            <!-- ====================================================== -->
+
+            <div class="d-grid mt-4">
+
+
+                <!-- USUARIO CON SESIÓN -->
+
+                {% if user.is_authenticated %}
+
+
+                    {% if perfil %}
+
+
+                        <!-- ================================================== -->
+                        <!-- ARRENDATARIO -->
+                        <!-- ================================================== -->
+
+                        {% if perfil.tipo_usuario == 'arrendatario' %}
+
+
+                            <!-- YA TIENE UNA RESERVA -->
+
+                            {% if solicitud_existente %}
+
+
+                                <div class="alert alert-success mb-0">
+
+
+                                    <h5 class="alert-heading">
+
+                                        Visita reservada
+
+                                    </h5>
+
+
+                                    <p class="mb-3">
+
+                                        Ya tienes una visita reservada
+                                        para esta propiedad.
+
+                                    </p>
+
+
+
+                                    <p class="mb-1">
+
+                                        <strong>
+                                            Fecha:
+                                        </strong>
+
+                                        {{ solicitud_existente.fecha_visita|date:"d/m/Y" }}
+
+                                    </p>
+
+
+
+                                    <p class="mb-2">
+
+                                        <strong>
+                                            Hora:
+                                        </strong>
+
+                                        {{ solicitud_existente.hora_visita|time:"H:i" }} hrs
+
+                                    </p>
+
+
+
+                                    <span class="badge bg-success">
+
+                                        Confirmada
+
+                                    </span>
+
+
+
+                                    <div class="d-grid mt-3">
+
+                                        <a
+                                            href="{% url 'gestion_inmuebles:solicitudes' %}"
+                                            class="btn btn-outline-success"
+                                        >
+                                            Ver mis visitas
+                                        </a>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                            <!-- NO TIENE RESERVA -->
+
+                            {% else %}
+
+
+                                {% if horarios_disponibles %}
+
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary btn-lg"
+                                        data-bs-toggle="offcanvas"
+                                        data-bs-target="#agendarVisita"
+                                        aria-controls="agendarVisita"
+                                    >
+                                        Reservar visita
+                                    </button>
+
+
+                                {% else %}
+
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary btn-lg"
+                                        disabled
+                                    >
+                                        Sin horarios disponibles
+                                    </button>
+
+
+                                    <small class="text-muted text-center mt-2">
+
+                                        El arrendador todavía no ha publicado
+                                        horarios de visita.
+
+                                    </small>
+
+
+                                {% endif %}
+
+
+                            {% endif %}
+
+
+
+                        <!-- ================================================== -->
+                        <!-- ARRENDADOR -->
+                        <!-- ================================================== -->
+
+                        {% else %}
+
+
+                            <div class="alert alert-light border text-center mb-0">
+
+                                Las visitas pueden ser reservadas
+                                solamente por arrendatarios.
+
+                            </div>
+
+
+                        {% endif %}
+
+
+
+                    <!-- USUARIO SIN PERFIL -->
+
+                    {% else %}
+
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary btn-lg"
+                            disabled
+                        >
+                            Perfil incompleto
+                        </button>
+
+
+                        <small class="text-danger mt-2 text-center">
+
+                            Debes completar tu perfil antes de reservar una visita.
+
+                        </small>
+
+
+                    {% endif %}
+
+
+
+                <!-- USUARIO SIN SESIÓN -->
+
+                {% else %}
+
+
+                    <a
+                        href="{% url 'gestion_inmuebles:login' %}?next={{ request.path }}"
+                        class="btn btn-primary btn-lg"
+                    >
+                        Iniciar sesión para reservar
+                    </a>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ====================================================== -->
+    <!-- DESCRIPCIÓN -->
+    <!-- ====================================================== -->
+
+    <div class="card shadow-sm mt-4">
+
+        <div class="card-body">
+
+
+            <h4>
+                Descripción
+            </h4>
+
+
+            <p class="mb-0">
+
+                {{ inmueble.descripcion }}
+
+            </p>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================== -->
+<!-- PANEL LATERAL PARA RESERVAR VISITA -->
+<!-- ========================================================== -->
+
+{% if user.is_authenticated %}
+
+    {% if perfil %}
+
+        {% if perfil.tipo_usuario == 'arrendatario' %}
+
+            {% if not solicitud_existente %}
+
+
+                <div
+                    class="offcanvas offcanvas-end"
+                    tabindex="-1"
+                    id="agendarVisita"
+                    aria-labelledby="agendarVisitaLabel"
+                    style="width: 500px;"
+                >
+
+
+                    <!-- ====================================================== -->
+                    <!-- CABECERA -->
+                    <!-- ====================================================== -->
+
+                    <div class="offcanvas-header border-bottom">
+
+
+                        <h5
+                            class="offcanvas-title"
+                            id="agendarVisitaLabel"
+                        >
+                            Reservar visita
+                        </h5>
+
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Cerrar"
+                        >
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- ====================================================== -->
+                    <!-- CONTENIDO -->
+                    <!-- ====================================================== -->
+
+                    <div class="offcanvas-body">
+
+
+                        <!-- ================================================== -->
+                        <!-- RESUMEN DEL INMUEBLE -->
+                        <!-- ================================================== -->
+
+                        <div class="card shadow-sm mb-4">
+
+
+                            {% if inmueble.imagen %}
+
+
+                                <img
+                                    src="{{ inmueble.imagen.url }}"
+                                    alt="{{ inmueble.nombre }}"
+                                    class="card-img-top"
+                                    style="
+                                        height: 180px;
+                                        object-fit: cover;
+                                    "
+                                >
+
+
+                            {% endif %}
+
+
+                            <div class="card-body">
+
+
+                                <h5 class="card-title">
+
+                                    {{ inmueble.nombre }}
+
+                                </h5>
+
+
+                                <p class="text-muted mb-1">
+
+                                    {{ inmueble.tipo_inmueble }}
+
+                                </p>
+
+
+                                <p class="text-muted mb-1">
+
+                                    {{ inmueble.direccion }}
+
+                                </p>
+
+
+                                <p class="text-muted mb-2">
+
+                                    {{ inmueble.comuna }}
+
+                                </p>
+
+
+                                <h5 class="text-primary mb-0">
+
+                                    ${{ inmueble.precio_mensual }}
+
+                                </h5>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ================================================== -->
+                        <!-- DATOS DEL USUARIO -->
+                        <!-- ================================================== -->
+
+                        <h5 class="mb-3">
+
+                            Tus datos
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            Estos datos corresponden a tu perfil
+                            y no se modifican al reservar una visita.
+
+                        </p>
+
+
+
+                        <!-- NOMBRE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Nombre y apellido
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{ user.get_full_name|default:user.username }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+
+                        <!-- RUT -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                RUT
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{ perfil.rut }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+
+                        <!-- CORREO -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Correo electrónico
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                value="{{ user.email }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+
+                        <!-- TELÉFONO -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Teléfono
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{ perfil.telefono }}"
+                                readonly
+                            >
+
+                        </div>
+
+
+
+                        <hr class="my-4">
+
+
+
+                        <!-- ================================================== -->
+                        <!-- FORMULARIO DE RESERVA -->
+                        <!-- ================================================== -->
+
+                        <h5 class="mb-3">
+
+                            Selecciona tu visita
+
+                        </h5>
+
+
+
+                        {% if horarios_disponibles %}
+
+
+                            <form method="POST">
+
+
+                                {% csrf_token %}
+
+
+
+                                <!-- ================================================== -->
+                                <!-- HORARIO -->
+                                <!-- ================================================== -->
+
+                                <div class="mb-3">
+
+
+                                    <label
+                                        for="horario"
+                                        class="form-label fw-semibold"
+                                    >
+                                        Horarios disponibles
+                                    </label>
+
+
+
+                                    <select
+                                        name="horario"
+                                        id="horario"
+                                        class="form-select"
+                                        required
+                                    >
+
+
+                                        <option value="">
+
+                                            Selecciona un horario
+
+                                        </option>
+
+
+
+                                        {% for horario in horarios_disponibles %}
+
+
+                                            <option value="{{ horario.id }}">
+
+                                                {{ horario.fecha|date:"d/m/Y" }}
+                                                -
+                                                {{ horario.hora|time:"H:i" }} hrs
+
+                                            </option>
+
+
+                                        {% endfor %}
+
+
+                                    </select>
+
+
+
+                                    <div class="form-text">
+
+                                        Solo aparecen los horarios publicados
+                                        por el arrendador.
+
+                                    </div>
+
+
+
+                                    {% if form_reserva.horario.errors %}
+
+
+                                        <div class="text-danger small mt-1">
+
+
+                                            {% for error in form_reserva.horario.errors %}
+
+                                                {{ error }}
+
+                                            {% endfor %}
+
+
+                                        </div>
+
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <!-- ================================================== -->
+                                <!-- COMENTARIOS -->
+                                <!-- ================================================== -->
+
+                                <div class="mb-3">
+
+
+                                    <label
+                                        for="comentarios"
+                                        class="form-label"
+                                    >
+                                        Comentarios
+                                    </label>
+
+
+
+                                    <textarea
+                                        id="comentarios"
+                                        name="comentarios"
+                                        class="form-control"
+                                        rows="4"
+                                        placeholder="Puedes agregar un comentario..."
+                                    >{{ form_reserva.comentarios.value|default_if_none:"" }}</textarea>
+
+
+
+                                    <div class="form-text">
+
+                                        Este campo es opcional.
+
+                                    </div>
+
+
+
+                                    {% if form_reserva.comentarios.errors %}
+
+
+                                        <div class="text-danger small mt-1">
+
+
+                                            {% for error in form_reserva.comentarios.errors %}
+
+                                                {{ error }}
+
+                                            {% endfor %}
+
+
+                                        </div>
+
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <!-- ================================================== -->
+                                <!-- BOTÓN -->
+                                <!-- ================================================== -->
+
+                                <div class="d-grid mt-4">
+
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary btn-lg"
+                                    >
+                                        Reservar visita
+                                    </button>
+
+
+                                </div>
+
+
+                            </form>
+
+
+
+                        {% else %}
+
+
+                            <!-- ================================================== -->
+                            <!-- SIN HORARIOS -->
+                            <!-- ================================================== -->
+
+                            <div class="alert alert-warning">
+
+
+                                <strong>
+
+                                    No hay horarios disponibles.
+
+                                </strong>
+
+
+                                <p class="mb-0 mt-1">
+
+                                    El arrendador todavía no ha publicado
+                                    horarios para visitar esta propiedad.
+
+                                </p>
+
+
+                            </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endif %}
+
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}
+
+
+
+<!-- ========================================================== -->
+<!-- ABRIR PANEL SI EL FORMULARIO TUVO ERRORES -->
+<!-- ========================================================== -->
+
+{% if form_reserva.errors %}
+
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                const panel = document.getElementById(
+                    'agendarVisita'
+                );
+
+
+                if (panel) {
+
+                    const offcanvas = new bootstrap.Offcanvas(
+                        panel
+                    );
+
+                    offcanvas.show();
+
+                }
+
+            }
+        );
+
+    </script>
+
+{% endif %}
+
+
+{% endblock %}

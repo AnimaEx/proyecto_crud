@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Mi perfil
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container py-5">
+
+
+    <!-- ====================================================== -->
+    <!-- TÍTULO -->
+    <!-- ====================================================== -->
+
+    <div class="mb-4">
+
+        <h1 class="fw-bold">
+            Mi perfil
+        </h1>
+
+        <p class="text-muted">
+            Administra tu información personal.
+        </p>
+
+    </div>
+
+
+
+    <!-- ====================================================== -->
+    <!-- DATOS PERSONALES -->
+    <!-- ====================================================== -->
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-body p-4">
+
+
+            <!-- ====================================================== -->
+            <!-- ENCABEZADO -->
+            <!-- ====================================================== -->
+
+            <div
+                class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+            >
+
+
+                <h4 class="mb-0">
+                    Datos personales
+                </h4>
+
+
+                <a
+                    href="{% url 'gestion_inmuebles:editar_perfil' %}"
+                    class="btn btn-outline-primary"
+                >
+                    Editar mis datos
+                </a>
+
+
+            </div>
+
+
+
+            <!-- ====================================================== -->
+            <!-- INFORMACIÓN -->
+            <!-- ====================================================== -->
+
+            <div class="row g-4">
+
+
+                <!-- NOMBRE -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Nombre
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ user.first_name }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- APELLIDO -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Apellido
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ user.last_name }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- CORREO -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Correo electrónico
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ user.email }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- RUT -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        RUT
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ perfil.rut }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- DIRECCIÓN -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Dirección
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ perfil.direccion }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- TELÉFONO -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Teléfono
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ perfil.telefono }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- TIPO DE USUARIO -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Tipo de usuario
+                    </small>
+
+                    <p class="fw-semibold mb-0">
+                        {{ perfil.get_tipo_usuario_display }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

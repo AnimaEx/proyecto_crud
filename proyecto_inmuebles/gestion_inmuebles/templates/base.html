@@ -1,0 +1,99 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <title>
+
+        {% block title %}
+
+            Inmuebles
+
+        {% endblock %}
+
+    </title>
+
+
+
+    <!-- ====================================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ====================================================== -->
+    <!-- CSS PERSONALIZADO -->
+    <!-- ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+
+
+    <!-- ====================================================== -->
+    <!-- NAVBAR -->
+    <!-- ====================================================== -->
+
+    {% include "navbar.html" %}
+
+
+
+    <!-- ====================================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ====================================================== -->
+
+    <main class="flex-grow-1">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+
+    <!-- ====================================================== -->
+    <!-- FOOTER -->
+    <!-- ====================================================== -->
+
+    {% include "footer.html" %}
+
+
+
+    <!-- ====================================================== -->
+    <!-- BOOTSTRAP JS -->
+    <!-- ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    >
+    </script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Registrarse
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4 p-md-5">
+
+
+                    <!-- TÍTULO -->
+                    <div class="text-center mb-4">
+
+                        <h2 class="fw-bold">
+                            Crear cuenta
+                        </h2>
+
+                        <p class="text-muted">
+                            Regístrate para poder agendar visitas a propiedades.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- ========================================== -->
+                    <!-- ERRORES GENERALES DEL FORMULARIO -->
+                    <!-- ========================================== -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            {% for error in form.non_field_errors %}
+
+                                <p class="mb-0">
+                                    {{ error }}
+                                </p>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ========================================== -->
+                    <!-- FORMULARIO -->
+                    <!-- ========================================== -->
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <div class="row">
+
+
+                            <!-- ================================== -->
+                            <!-- NOMBRE -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Nombre
+                                </label>
+
+                                {{ form.first_name }}
+
+                                {% for error in form.first_name.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- APELLIDO -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Apellido
+                                </label>
+
+                                {{ form.last_name }}
+
+                                {% for error in form.last_name.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- CORREO -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Correo electrónico
+                                </label>
+
+                                {{ form.email }}
+
+                                {% for error in form.email.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- RUT -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    RUT
+                                </label>
+
+                                {{ form.rut }}
+
+                                {% for error in form.rut.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- DIRECCIÓN -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Dirección
+                                </label>
+
+                                {{ form.direccion }}
+
+                                {% for error in form.direccion.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- TELÉFONO -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Teléfono
+                                </label>
+
+                                {{ form.telefono }}
+
+                                {% for error in form.telefono.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- TIPO DE USUARIO -->
+                            <!-- ================================== -->
+
+                            <div class="col-12 mb-3">
+
+                                <label class="form-label">
+                                    Tipo de usuario
+                                </label>
+
+                                {{ form.tipo_usuario }}
+
+                                <div class="form-text">
+                                    Arrendatario: busca propiedades.
+                                    Arrendador: publica propiedades.
+                                </div>
+
+                                {% for error in form.tipo_usuario.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- CONTRASEÑA -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Contraseña
+                                </label>
+
+                                {{ form.password1 }}
+
+                                {% for error in form.password1.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                            <!-- ================================== -->
+                            <!-- REPETIR CONTRASEÑA -->
+                            <!-- ================================== -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Confirmar contraseña
+                                </label>
+
+                                {{ form.password2 }}
+
+                                {% for error in form.password2.errors %}
+
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ====================================== -->
+                        <!-- AYUDA CONTRASEÑA -->
+                        <!-- ====================================== -->
+
+                        <div class="alert alert-light border small text-muted">
+
+                            La contraseña no puede ser demasiado similar
+                            a tus datos personales, debe contener al menos
+                            8 caracteres y no puede ser completamente numérica.
+
+                        </div>
+
+
+
+                        <!-- ====================================== -->
+                        <!-- BOTÓN REGISTRARSE -->
+                        <!-- ====================================== -->
+
+                        <div class="d-grid mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                            >
+                                Registrarse
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+
+
+                    <!-- ========================================== -->
+                    <!-- LINK AL LOGIN -->
+                    <!-- ========================================== -->
+
+                    <div class="text-center mt-4">
+
+                        <span class="text-muted">
+                            ¿Ya tienes una cuenta?
+                        </span>
+
+                        <a
+                            href="{% url 'gestion_inmuebles:login' %}"
+                            class="text-decoration-none"
+                        >
+                            Iniciar sesión
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================================== -->
+<!-- ESTILO PARA LOS CAMPOS DEL FORMULARIO DJANGO -->
+<!-- ========================================================== -->
+
+<style>
+
+    .card input,
+    .card select {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+    }
+
+
+    .card input:focus,
+    .card select:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+</style>
+
+
+{% endblock %}

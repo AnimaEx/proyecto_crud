@@ -1,0 +1,296 @@
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+
+    <div class="container">
+
+
+        <!-- ====================================================== -->
+        <!-- LOGO -->
+        <!-- ====================================================== -->
+
+        <a
+            class="navbar-brand fw-bold text-primary"
+            href="{% url 'gestion_inmuebles:home' %}"
+        >
+            Inmuebles
+        </a>
+
+
+
+        <!-- ====================================================== -->
+        <!-- BOTÓN RESPONSIVE -->
+        <!-- ====================================================== -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarPrincipal"
+            aria-controls="navbarPrincipal"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+
+        <!-- ====================================================== -->
+        <!-- CONTENIDO DEL NAVBAR -->
+        <!-- ====================================================== -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarPrincipal"
+        >
+
+
+            <!-- ================================================== -->
+            <!-- MENÚ IZQUIERDO -->
+            <!-- ================================================== -->
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                <!-- ================================================== -->
+                <!-- INICIO -->
+                <!-- Solo aparece si NO estamos en el Home -->
+                <!-- ================================================== -->
+
+                {% if request.resolver_match.url_name != 'home' %}
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{% url 'gestion_inmuebles:home' %}"
+                        >
+                            Inicio
+                        </a>
+
+                    </li>
+
+                {% endif %}
+
+
+
+                {% if user.is_authenticated %}
+
+
+                    <!-- ================================================== -->
+                    <!-- ARRENDADOR -->
+                    <!-- ================================================== -->
+
+                    {% if user.perfil.tipo_usuario == 'arrendador' %}
+
+
+                        <!-- ================================================== -->
+                        <!-- MIS PROPIEDADES -->
+                        <!-- ================================================== -->
+
+                        <li class="nav-item">
+
+                            <a
+                                class="
+                                    nav-link
+                                    {% if request.resolver_match.url_name == 'mis_inmuebles' %}
+                                        fw-bold text-primary
+                                    {% endif %}
+                                "
+                                href="{% url 'gestion_inmuebles:mis_inmuebles' %}"
+                            >
+                                Mis propiedades
+                            </a>
+
+                        </li>
+
+
+
+                        <!-- ================================================== -->
+                        <!-- VISITAS RESERVADAS -->
+                        <!-- ================================================== -->
+
+                        <li class="nav-item">
+
+                            <a
+                                class="
+                                    nav-link
+                                    d-flex
+                                    align-items-center
+                                    gap-2
+                                    {% if request.resolver_match.url_name == 'solicitudes' %}
+                                        fw-bold text-primary
+                                    {% endif %}
+                                "
+                                href="{% url 'gestion_inmuebles:solicitudes' %}"
+                            >
+
+                                <span>
+                                    Visitas reservadas
+                                </span>
+
+
+                                {% if total_visitas_nuevas > 0 %}
+
+                                    <span
+                                        class="badge rounded-pill bg-danger"
+                                    >
+                                        {{ total_visitas_nuevas }}
+                                    </span>
+
+                                {% endif %}
+
+
+                            </a>
+
+                        </li>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- ARRENDATARIO -->
+                    <!-- ================================================== -->
+
+                    {% elif user.perfil.tipo_usuario == 'arrendatario' %}
+
+
+                        <!-- ================================================== -->
+                        <!-- MIS VISITAS -->
+                        <!-- ================================================== -->
+
+                        <li class="nav-item">
+
+                            <a
+                                class="
+                                    nav-link
+                                    {% if request.resolver_match.url_name == 'solicitudes' %}
+                                        fw-bold text-primary
+                                    {% endif %}
+                                "
+                                href="{% url 'gestion_inmuebles:solicitudes' %}"
+                            >
+                                Mis visitas
+                            </a>
+
+                        </li>
+
+
+                    {% endif %}
+
+
+                {% endif %}
+
+
+            </ul>
+
+
+
+            <!-- ================================================== -->
+            <!-- MENÚ DERECHO -->
+            <!-- ================================================== -->
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+
+
+                {% if user.is_authenticated %}
+
+
+                    <!-- ================================================== -->
+                    <!-- NOMBRE DEL USUARIO -->
+                    <!-- ================================================== -->
+
+                    <span class="navbar-text me-2">
+
+                        Hola,
+                        {{ user.first_name|default:user.username }}
+
+                    </span>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- MI PERFIL -->
+                    <!-- ================================================== -->
+
+                    <a
+                        href="{% url 'gestion_inmuebles:perfil' %}"
+                        class="
+                            btn
+                            {% if request.resolver_match.url_name == 'perfil' %}
+                                btn-primary
+                            {% else %}
+                                btn-outline-primary
+                            {% endif %}
+                        "
+                    >
+                        Mi perfil
+                    </a>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- CERRAR SESIÓN -->
+                    <!-- ================================================== -->
+
+                    <form
+                        method="POST"
+                        action="{% url 'gestion_inmuebles:logout' %}"
+                        class="m-0"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger"
+                        >
+                            Cerrar sesión
+                        </button>
+
+
+                    </form>
+
+
+
+                {% else %}
+
+
+                    <!-- ================================================== -->
+                    <!-- LOGIN -->
+                    <!-- ================================================== -->
+
+                    <a
+                        href="{% url 'gestion_inmuebles:login' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        Iniciar sesión
+                    </a>
+
+
+
+                    <!-- ================================================== -->
+                    <!-- REGISTRO -->
+                    <!-- ================================================== -->
+
+                    <a
+                        href="{% url 'gestion_inmuebles:register' %}"
+                        class="btn btn-primary"
+                    >
+                        Registrarse
+                    </a>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</nav>

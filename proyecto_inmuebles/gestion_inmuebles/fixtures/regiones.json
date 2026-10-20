@@ -1,0 +1,114 @@
+[
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 1,
+    "fields": {
+      "nombre": "Tarapacá"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 2,
+    "fields": {
+      "nombre": "Antofagasta"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 3,
+    "fields": {
+      "nombre": "Atacama"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 4,
+    "fields": {
+      "nombre": "Coquimbo"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 5,
+    "fields": {
+      "nombre": "Valparaíso"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 6,
+    "fields": {
+      "nombre": "Libertador General Bernardo O'Higgins"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 7,
+    "fields": {
+      "nombre": "Maule"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 8,
+    "fields": {
+      "nombre": "Biobío"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 9,
+    "fields": {
+      "nombre": "La Araucanía"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 10,
+    "fields": {
+      "nombre": "Los Lagos"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 11,
+    "fields": {
+      "nombre": "Aysén del General Carlos Ibáñez del Campo"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 12,
+    "fields": {
+      "nombre": "Magallanes y de la Antártica Chilena"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 13,
+    "fields": {
+      "nombre": "Metropolitana de Santiago"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 14,
+    "fields": {
+      "nombre": "Los Ríos"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 15,
+    "fields": {
+      "nombre": "Arica y Parinacota"
+    }
+  },
+  {
+    "model": "gestion_inmuebles.region",
+    "pk": 16,
+    "fields": {
+      "nombre": "Ñuble"
+    }
+  }
+]

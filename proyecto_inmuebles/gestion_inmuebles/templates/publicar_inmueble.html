@@ -1,0 +1,821 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Publicar inmueble
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container py-5">
+
+
+    <!-- ====================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+
+        <div>
+
+            <h1 class="fw-bold mb-1">
+                Publicar inmueble
+            </h1>
+
+
+            <p class="text-muted mb-0">
+                Completa la información de la propiedad que deseas publicar.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'gestion_inmuebles:perfil' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver a mi perfil
+        </a>
+
+
+    </div>
+
+
+
+    <!-- ====================================================== -->
+    <!-- FORMULARIO -->
+    <!-- ====================================================== -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4 p-md-5">
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                {% csrf_token %}
+
+
+
+                <!-- ================================================== -->
+                <!-- ERRORES GENERALES -->
+                <!-- ================================================== -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="alert alert-danger">
+
+                        {% for error in form.non_field_errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- ================================================== -->
+                <!-- INFORMACIÓN PRINCIPAL -->
+                <!-- ================================================== -->
+
+                <h4 class="fw-bold mb-3">
+                    Información principal
+                </h4>
+
+
+                <div class="row g-4 mb-5">
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="col-md-8">
+
+                        <label
+                            for="{{ form.nombre.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.nombre.label }}
+                        </label>
+
+
+                        {{ form.nombre }}
+
+
+                        {% if form.nombre.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.nombre.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- TIPO DE INMUEBLE -->
+
+                    <div class="col-md-4">
+
+                        <label
+                            for="{{ form.tipo_inmueble.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.tipo_inmueble.label }}
+                        </label>
+
+
+                        {{ form.tipo_inmueble }}
+
+
+                        {% if form.tipo_inmueble.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.tipo_inmueble.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- DESCRIPCIÓN -->
+
+                    <div class="col-12">
+
+                        <label
+                            for="{{ form.descripcion.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.descripcion.label }}
+                        </label>
+
+
+                        {{ form.descripcion }}
+
+
+                        {% if form.descripcion.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.descripcion.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- IMAGEN -->
+
+                    <div class="col-12">
+
+                        <label
+                            for="{{ form.imagen.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.imagen.label }}
+                        </label>
+
+
+                        {{ form.imagen }}
+
+
+                        <div class="form-text">
+                            Selecciona una imagen principal para la propiedad.
+                        </div>
+
+
+                        {% if form.imagen.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.imagen.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- UBICACIÓN -->
+                <!-- ================================================== -->
+
+                <h4 class="fw-bold mb-3">
+                    Ubicación
+                </h4>
+
+
+                <div class="row g-4 mb-5">
+
+
+                    <!-- DIRECCIÓN -->
+
+                    <div class="col-12">
+
+                        <label
+                            for="{{ form.direccion.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.direccion.label }}
+                        </label>
+
+
+                        {{ form.direccion }}
+
+
+                        {% if form.direccion.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.direccion.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- REGIÓN -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="region"
+                            class="form-label fw-semibold"
+                        >
+                            Región
+                        </label>
+
+
+                        <select
+                            name="region"
+                            id="region"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Selecciona una región
+                            </option>
+
+
+                            {% for region in regiones %}
+
+                                <option
+                                    value="{{ region.id }}"
+
+                                    {% if region_seleccionada == region.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ region.nombre }}
+                                </option>
+
+                            {% endfor %}
+
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- COMUNA -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="comuna"
+                            class="form-label fw-semibold"
+                        >
+                            Comuna
+                        </label>
+
+
+                        <select
+                            name="comuna"
+                            id="comuna"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Selecciona una comuna
+                            </option>
+
+
+                            {% for comuna in comunas %}
+
+                                <option
+                                    value="{{ comuna.id }}"
+                                    data-region="{{ comuna.region_id }}"
+
+                                    {% if comuna_seleccionada == comuna.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ comuna.nombre }}
+                                </option>
+
+                            {% endfor %}
+
+
+                        </select>
+
+
+                        {% if form.comuna.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.comuna.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- CARACTERÍSTICAS -->
+                <!-- ================================================== -->
+
+                <h4 class="fw-bold mb-3">
+                    Características
+                </h4>
+
+
+                <div class="row g-4 mb-5">
+
+
+                    <!-- M2 CONSTRUIDOS -->
+
+                    <div class="col-md-6 col-lg-3">
+
+                        <label
+                            for="{{ form.m2_construidos.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.m2_construidos.label }}
+                        </label>
+
+
+                        {{ form.m2_construidos }}
+
+
+                        {% if form.m2_construidos.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.m2_construidos.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- M2 TOTALES -->
+
+                    <div class="col-md-6 col-lg-3">
+
+                        <label
+                            for="{{ form.m2_totales.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.m2_totales.label }}
+                        </label>
+
+
+                        {{ form.m2_totales }}
+
+
+                        {% if form.m2_totales.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.m2_totales.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- HABITACIONES -->
+
+                    <div class="col-md-6 col-lg-2">
+
+                        <label
+                            for="{{ form.habitaciones.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.habitaciones.label }}
+                        </label>
+
+
+                        {{ form.habitaciones }}
+
+
+                        {% if form.habitaciones.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.habitaciones.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- BAÑOS -->
+
+                    <div class="col-md-6 col-lg-2">
+
+                        <label
+                            for="{{ form.banos.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.banos.label }}
+                        </label>
+
+
+                        {{ form.banos }}
+
+
+                        {% if form.banos.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.banos.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- ESTACIONAMIENTOS -->
+
+                    <div class="col-md-6 col-lg-2">
+
+                        <label
+                            for="{{ form.estacionamientos.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.estacionamientos.label }}
+                        </label>
+
+
+                        {{ form.estacionamientos }}
+
+
+                        {% if form.estacionamientos.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.estacionamientos.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- PRECIO -->
+                <!-- ================================================== -->
+
+                <h4 class="fw-bold mb-3">
+                    Precio
+                </h4>
+
+
+                <div class="row mb-5">
+
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="{{ form.precio_mensual.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.precio_mensual.label }}
+                        </label>
+
+
+                        <div class="input-group">
+
+
+                            <span class="input-group-text">
+                                $
+                            </span>
+
+
+                            {{ form.precio_mensual }}
+
+
+                        </div>
+
+
+                        {% if form.precio_mensual.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.precio_mensual.errors %}
+
+                                    {{ error }}
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- BOTONES -->
+                <!-- ================================================== -->
+
+                <div class="d-flex justify-content-end gap-2 flex-wrap">
+
+
+                    <a
+                        href="{% url 'gestion_inmuebles:perfil' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Cancelar
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4"
+                    >
+                        Publicar inmueble
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ============================================================ -->
+<!-- FILTRAR COMUNAS SEGÚN REGIÓN -->
+<!-- ============================================================ -->
+
+<script>
+
+    // Selector de región
+    const regionSelect = document.getElementById(
+        'region'
+    );
+
+
+    // Selector de comuna
+    const comunaSelect = document.getElementById(
+        'comuna'
+    );
+
+
+    // Guardamos una copia de todas las comunas
+    const todasLasComunas = Array.from(
+        comunaSelect.options
+    );
+
+
+    // ============================================================
+    // FUNCIÓN PARA FILTRAR COMUNAS
+    // ============================================================
+
+    function filtrarComunas() {
+
+
+        const regionSeleccionada = (
+            regionSelect.value
+        );
+
+
+        // Guardamos la comuna seleccionada actualmente
+        const comunaActual = (
+            comunaSelect.value
+        );
+
+
+        // Limpiamos el selector
+        comunaSelect.innerHTML = '';
+
+
+        // Creamos nuevamente la opción inicial
+        const opcionInicial = document.createElement(
+            'option'
+        );
+
+
+        opcionInicial.value = '';
+
+        opcionInicial.textContent = (
+            'Selecciona una comuna'
+        );
+
+
+        comunaSelect.appendChild(
+            opcionInicial
+        );
+
+
+        // Si todavía no selecciona región,
+        // no mostramos comunas
+        if (!regionSeleccionada) {
+
+            return;
+
+        }
+
+
+        // Recorremos todas las comunas
+        todasLasComunas.forEach(
+
+            function (opcion) {
+
+
+                const regionComuna = (
+                    opcion.dataset.region
+                );
+
+
+                // Si la comuna pertenece a la región
+                if (
+                    regionComuna === regionSeleccionada
+                ) {
+
+
+                    const nuevaOpcion = (
+                        opcion.cloneNode(true)
+                    );
+
+
+                    // Si el formulario volvió por un error,
+                    // dejamos seleccionada la comuna anterior
+                    if (
+                        opcion.value === comunaActual
+                    ) {
+
+                        nuevaOpcion.selected = true;
+
+                    }
+
+
+                    comunaSelect.appendChild(
+                        nuevaOpcion
+                    );
+
+                }
+
+            }
+
+        );
+
+    }
+
+
+    // ============================================================
+    // CUANDO CAMBIA LA REGIÓN
+    // ============================================================
+
+    regionSelect.addEventListener(
+
+        'change',
+
+        function () {
+
+
+            // Al cambiar de región no queremos
+            // conservar una comuna de la región anterior
+            comunaSelect.value = '';
+
+
+            filtrarComunas();
+
+        }
+
+    );
+
+
+    // ============================================================
+    // EJECUTAR AL CARGAR LA PÁGINA
+    // ============================================================
+
+    filtrarComunas();
+
+</script>
+
+
+{% endblock %}

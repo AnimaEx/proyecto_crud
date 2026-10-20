@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Administrar horarios
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ====================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+        <div>
+
+            <h1 class="fw-bold mb-1">
+                Administrar horarios
+            </h1>
+
+            <p class="text-muted mb-0">
+                Define los horarios disponibles para visitar esta propiedad.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'gestion_inmuebles:mis_inmuebles' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver a mis propiedades
+        </a>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- RESUMEN DEL INMUEBLE -->
+    <!-- ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-md-3">
+
+                    {% if inmueble.imagen %}
+
+                        <img
+                            src="{{ inmueble.imagen.url }}"
+                            alt="{{ inmueble.nombre }}"
+                            class="img-fluid rounded w-100"
+                            style="height: 160px; object-fit: cover;"
+                        >
+
+                    {% else %}
+
+                        <div
+                            class="bg-secondary-subtle rounded d-flex align-items-center justify-content-center"
+                            style="height: 160px;"
+                        >
+                            <span class="text-secondary">
+                                Sin imagen
+                            </span>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="col-md-9">
+
+                    <h4 class="fw-bold mb-2">
+                        {{ inmueble.nombre }}
+                    </h4>
+
+                    <p class="text-muted mb-1">
+                        {{ inmueble.tipo_inmueble }}
+                        -
+                        {{ inmueble.comuna }}
+                    </p>
+
+                    <p class="mb-0">
+                        {{ inmueble.direccion }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- ================================================== -->
+        <!-- AGREGAR HORARIO -->
+        <!-- ================================================== -->
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-3">
+                        Agregar horario
+                    </h4>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <!-- ERRORES GENERALES -->
+
+                        {% if form.non_field_errors %}
+
+                            <div class="alert alert-danger">
+
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- FECHA -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="{{ form.fecha.id_for_label }}"
+                                class="form-label"
+                            >
+                                Fecha
+                            </label>
+
+                            {{ form.fecha }}
+
+                            {% if form.fecha.errors %}
+
+                                <div class="text-danger small mt-1">
+
+                                    {% for error in form.fecha.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- HORA -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="{{ form.hora.id_for_label }}"
+                                class="form-label"
+                            >
+                                Hora
+                            </label>
+
+                            {{ form.hora }}
+
+                            {% if form.hora.errors %}
+
+                                <div class="text-danger small mt-1">
+
+                                    {% for error in form.hora.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Agregar horario
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- HORARIOS -->
+        <!-- ================================================== -->
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-3">
+                        Horarios publicados
+                    </h4>
+
+
+                    {% for horario in horarios %}
+
+                        <div class="horario-item border rounded p-3 mb-3">
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                                <div>
+
+                                    <div class="fw-semibold">
+                                        {{ horario.fecha|date:"d/m/Y" }}
+                                    </div>
+
+                                    <div class="text-muted">
+                                        {{ horario.hora|time:"H:i" }} hrs
+                                    </div>
+
+                                </div>
+
+
+                                <div class="d-flex align-items-center gap-2">
+
+                                    {% if horario.disponible %}
+
+                                        <span class="badge bg-success">
+                                            Disponible
+                                        </span>
+
+                                        <form
+                                            method="POST"
+                                            action="{% url 'gestion_inmuebles:eliminar_horario' horario.id %}"
+                                            class="m-0"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                            >
+                                                Eliminar
+                                            </button>
+
+                                        </form>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+                                            Reservado
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    {% empty %}
+
+                        <div class="alert alert-light border mb-0">
+                            Todavía no has publicado horarios para esta propiedad.
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
